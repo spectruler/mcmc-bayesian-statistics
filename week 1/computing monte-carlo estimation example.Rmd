@@ -1,0 +1,68 @@
+---
+Week 1 
+---
+
+```{r}
+set.seed(32) # random seed for reproducibility 
+```
+```{r}
+m = 100 # sample size 
+a = 2.0 # shape param for gamma distribution
+b = 1.0/3.0 # rate param for gamma distribution
+```
+
+Simulate m independent samples from the gamma dist, use rgamma()
+
+```{r}
+theta = rgamma(n=m, shape = a, rate = b)
+head(theta)
+```
+
+```{r}
+hist(theta, freq=F) 
+# comparing it with theoretical  pdf, use curve function
+# dgamma(x-axis, shape, rate) for density gamma  
+curve(dgamma(x,shape=a, rate = b), col="blue", add=T)
+```
+
+We can use these simulated values to find mc-approximation
+
+```{r}
+# sum(theta)/m 
+mean(theta) # faster way
+a/b # expected value for gamma dist or theoretical mean 
+```
+
+We can improve it by increasing sample size, following law of large numbers 
+```{r}
+m <- 10000
+
+theta <- rgamma(n=m, shape = a, rate = b) # re-simulate 
+mean(theta)
+a/b 
+```
+Lets check variance 
+
+```{r}
+var(theta)  # experimental variance 
+a/b^2 # theoretical variance 
+```
+  Other approximation 
+  
+```{r}
+  # Approx. of probability that theta < 5
+  ind <- theta < 5.0
+  head(ind)
+  mean(ind) # approximation of prob. that theta < 5
+  
+  # comparision with true probability 
+  pgamma(q=5.0, shape = a, rate = 5) # evaluates cdf
+  
+```
+For .9 quantile for gamma dist for theta 
+```{r}
+    quantile(theta,probs=0.9)
+
+# comparision with true quantile 
+qgamma(p=0.9, shape=a, rate=b)
+```
